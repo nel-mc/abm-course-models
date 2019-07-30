@@ -1,5 +1,6 @@
 globals [
   glb-threshold    ;; global-threshold for adoption
+  num-categories   ;; number of categories of agents to adopt from
 ]
 
 
@@ -12,14 +13,17 @@ to setup
   ;; create clean slate
   clear-all
 
+  ;; set num-categories to adopt from
+  set num-categories 2
+
   ;; set global threshold for adoption
-  set glb-threshold random 2
+  set glb-threshold random num-categories
 
   ;; create num-agents turtles
   create-turtles num-agents [
     set color white
     move-to  one-of patches
-    update-adoption
+    set-adoption
   ]
 
   ;; start the clock
@@ -34,7 +38,7 @@ to go
     update-adoption
     ;; move turtles along for some animation
     facexy random-xcor random-ycor
-    forward 0.1
+    forward 0.5
     ;; set color depending on adoption
     ifelse adoption [
       set color blue
@@ -47,17 +51,21 @@ to go
   tick
 end
 
-;; determines the adoption threshold of the population--if agent-thrs is false--or
-;; the individual threshold.
-to update-adoption
+;; set adoption threshold
+to set-adoption
   ;; compute threshold
   ifelse agent-thrs [
-      set threshold random 2
+      set threshold random num-categories
     ] [
       set threshold glb-threshold
     ]
+end
+
+;; determines the adoption threshold of the population--if agent-thrs is false--or
+;; the individual threshold.
+to update-adoption
   ;; update adoption
-  set adoption ( random 2 < threshold )
+  set adoption ( random num-categories = threshold )
 
 end
 @#$#@#$#@
@@ -96,8 +104,8 @@ SLIDER
 num-agents
 num-agents
 0
-100
-100.0
+1000
+1000.0
 1
 1
 NIL
@@ -144,7 +152,7 @@ SWITCH
 116
 agent-thrs
 agent-thrs
-0
+1
 1
 -1000
 
@@ -166,6 +174,7 @@ false
 PENS
 "Red" 1.0 0 -2674135 true "" "plot count turtles with [color = red]"
 "Blue" 1.0 0 -13345367 true "" "plot count turtles with [color = blue]"
+"Average" 1.0 0 -7500403 true "" "plot count turtles / 2"
 
 @#$#@#$#@
 ## WHAT IS IT?
