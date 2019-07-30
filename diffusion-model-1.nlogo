@@ -1,23 +1,12 @@
-globals [
-  glb-threshold    ;; global-threshold for adoption
-  num-categories   ;; number of categories of agents to adopt from
-]
-
 
 turtles-own [
-  threshold    ;; agent-threshold for adoption
   adoption     ;; true if the agent has adopted, false otherwise
+  threshold    ;; threshold for adoption
 ]
 
 to setup
   ;; create clean slate
   clear-all
-
-  ;; set num-categories to adopt from
-  set num-categories 2
-
-  ;; set global threshold for adoption
-  set glb-threshold random num-categories
 
   ;; create num-agents turtles
   create-turtles num-agents [
@@ -37,6 +26,7 @@ to go
   ask turtles [
     update-adoption
     ;; move turtles along for some animation
+    ;; move them according to their adoption
     facexy random-xcor random-ycor
     forward 0.5
     ;; set color depending on adoption
@@ -55,9 +45,9 @@ end
 to set-adoption
   ;; compute threshold
   ifelse agent-thrs [
-      set threshold random num-categories
+      set threshold who mod 2
     ] [
-      set threshold glb-threshold
+      set threshold num-agents mod 2
     ]
 end
 
@@ -65,7 +55,7 @@ end
 ;; the individual threshold.
 to update-adoption
   ;; update adoption
-  set adoption ( random num-categories = threshold )
+  set adoption ( random 2 = threshold )
 
 end
 @#$#@#$#@
@@ -105,7 +95,7 @@ num-agents
 num-agents
 0
 1000
-1000.0
+223.0
 1
 1
 NIL
@@ -152,7 +142,7 @@ SWITCH
 116
 agent-thrs
 agent-thrs
-1
+0
 1
 -1000
 
