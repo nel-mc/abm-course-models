@@ -34,9 +34,11 @@ to go
   ask turtles [
     update-adoption
     update-color
-
   ]
-
+  ;; stop the model if there is no more adoption possible
+  if fraction-adopters = 1 [
+    stop
+  ]
   ;; advance the clock
   tick
 end
